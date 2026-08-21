@@ -218,13 +218,13 @@ nav.main-nav a.active { color:var(--cobalt); border-bottom-color:var(--cobalt); 
 @media (max-width:780px){ .pack-grid { grid-template-columns:repeat(2,1fr); } .pack-tiers { grid-template-columns:1fr; } .pack-sheet { padding:28px; } }
 
 
-.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:22px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
 .cards-2 { grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); }
 .ecard { display:flex; flex-direction:column; background:var(--paper); border:1px solid var(--hairline);
   border-radius:4px; overflow:hidden; text-align:left; transition:box-shadow 0.16s ease, transform 0.16s ease; }
 a.ecard, .ecard[data-go] { cursor:pointer; }
 .ecard:hover { box-shadow:0 8px 26px rgba(16,19,26,0.10); transform:translateY(-2px); }
-.ecard-media { position:relative; aspect-ratio:16/9; background:var(--paper-2); overflow:hidden; }
+.ecard-media { position:relative; aspect-ratio:3/2; background:var(--paper-2); overflow:hidden; }
 .ecard-media img, .ecard-media video { width:100%; height:100%; object-fit:cover; display:block; }
 .ecard-media.tall { aspect-ratio:4/5; }
 .ecard-tag { position:absolute; left:0; top:0; background:var(--cobalt); color:#fff;
@@ -487,11 +487,13 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
       <a data-go="attendance" data-t="nav.attendance">Attendance</a>
       <a data-go="news" data-t="nav.news">News</a>
       <a data-go="members" data-t="nav.members">Members</a>
+      <a data-go="checkin" data-t="nav.checkin">Check in</a>
       <a data-go="gallery" data-t="nav.gallery">Gallery</a>
       <a data-go="shop" data-t="nav.shop">Shop</a>
       <div class="nav-more">
         <button class="nav-more-btn" data-t="nav.more">More +</button>
         <div class="nav-more-panel">
+          <a data-go="finance" data-t="nav.finance">Finances</a>
           <a data-go="stats" data-t="nav.stats">Season stats</a>
           <a data-go="vote" data-t="nav.vote">Player of the month</a>
           <a data-go="history" data-t="nav.history">Club history</a>
@@ -609,6 +611,20 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
     </div>
   </section>
 
+  <section style="background:var(--paper-2); padding:76px 0;">
+    <div class="wrap" style="max-width:900px; text-align:center;">
+      <svg viewBox="0 0 200 200" style="width:44px; height:44px; color:var(--cobalt); opacity:0.25; margin:0 auto 18px;"><use href="#art-ball"/></svg>
+      <blockquote style="margin:0;">
+        <p style="font-family:var(--font-display); text-transform:none; font-size:clamp(24px,3.6vw,42px); line-height:1.2; color:var(--ink); margin:0 0 22px;">
+          &ldquo;I di enjoy every Saturday lek na my birthday because of IVC&rdquo;
+        </p>
+        <footer style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--smoke);">
+          Veteran Chia Ngam
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
   <section style="background:var(--signal); color:#fff; padding:68px 0; position:relative; overflow:hidden;">
     <svg viewBox="0 0 220 140" style="position:absolute; right:-30px; bottom:-20px; width:min(34vw,300px); color:rgba(255,255,255,0.16);"><use href="#art-boot"/></svg>
     <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:28px; position:relative;">
@@ -663,6 +679,7 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
         <p class="form-error" id="edFxErr" data-t="ed.fx.err">Add both teams and when it is played.</p>
         <button class="btn btn-signal" id="edFxSave"><span data-t="ed.add">Add</span></button>
       </div>
+      <div id="wxBox" style="margin-bottom:28px;"></div>
       <h2 style="font-size:clamp(22px,3vw,32px); margin-bottom:22px;" data-t="fx.upcoming">Upcoming</h2>
       <div class="grid-2" style="margin-bottom:60px;" id="fixtureGrid"></div>
       <h2 style="font-size:clamp(22px,3vw,32px); margin-bottom:22px;" data-t="fx.results">Results</h2>
@@ -903,6 +920,8 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
       <div class="tabs">
         <button class="tab active" data-tab="directory" data-t="members.tab.dir">Directory</button>
         <button class="tab" data-tab="dues" data-t="members.tab.dues">Dues</button>
+        <button class="tab" data-tab="socials" data-t="members.tab.socials">Socials</button>
+        <button class="tab" data-tab="fines" data-t="members.tab.fines">Fines</button>
         <button class="tab" data-tab="birthdays" data-t="members.tab.bday">Birthdays</button>
       </div>
 
@@ -993,6 +1012,40 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
         <p style="max-width:60ch;" data-t="momo.p">Members can settle dues straight from their phone. Tap a code to dial it, or copy the club number and send from your own MoMo menu.</p>
         <div class="momo" id="momoWrap" style="margin-top:22px;"></div>
         <p class="meta" style="margin-top:18px; max-width:70ch;" data-t="momo.note">Always confirm the payment with the treasurer on WhatsApp. Operator codes can change — check with MTN or Orange if a code stops working.</p>
+      </div>
+
+      <div class="tabpanel locked" id="tab-socials" data-lock="socials">
+        <p style="max-width:64ch;" data-t="soc.p">Weekly social contribution is <strong style="color:var(--ink);">1,000 FCFA</strong> per session, owed whether a member attends or not (Ch.3 Art.2). Tap to mark paid for the session shown.</p>
+        <div class="grid-3" style="margin:24px 0 28px;">
+          <div class="block"><div class="stat-num" id="socPaid">0</div><div class="stat-label" data-t="soc.paid">Paid this session</div></div>
+          <div class="block"><div class="stat-num" style="color:var(--smoke);" id="socOwing">0</div><div class="stat-label" data-t="soc.owing">Outstanding</div></div>
+          <div class="block block-signal"><div class="stat-num" style="color:#fff;" id="socTotal">0</div><div class="stat-label" style="color:rgba(255,255,255,0.8);" data-t="soc.total">Collected, FCFA</div></div>
+        </div>
+        <label for="socSession" data-t="att.session">Session</label>
+        <input id="socSession" type="date" style="max-width:260px;">
+        <div id="socList"></div>
+        <button class="btn btn-wa" id="socRemind" style="margin-top:24px;"><svg><use href="#ico-wa"/></svg><span data-t="soc.remind">Remind those outstanding</span></button>
+      </div>
+
+      <div class="tabpanel locked" id="tab-fines" data-lock="fines">
+        <p style="max-width:64ch;" data-t="fine.p">For the Chief Whip. Fines follow Chapter 3 Article 4 of the constitution.</p>
+        <div class="grid-3" style="margin:24px 0 28px;">
+          <div class="block"><div class="stat-num" id="fineCount">0</div><div class="stat-label" data-t="fine.count">Fines issued</div></div>
+          <div class="block"><div class="stat-num" style="color:var(--signal);" id="fineOwed">0</div><div class="stat-label" data-t="fine.owed">Unpaid, FCFA</div></div>
+          <div class="block block-signal"><div class="stat-num" style="color:#fff;" id="finePaid">0</div><div class="stat-label" style="color:rgba(255,255,255,0.8);" data-t="fine.paid">Collected, FCFA</div></div>
+        </div>
+        <div class="block" style="margin-bottom:26px;">
+          <h3 style="font-size:18px;" data-t="fine.new">Issue a fine</h3>
+          <div class="grid-2" style="gap:0 18px;">
+            <div><label for="fineWho" data-t="th.member">Member</label><select id="fineWho"></select></div>
+            <div><label for="fineWhat" data-t="fine.offence">Offence</label><select id="fineWhat"></select></div>
+          </div>
+          <label for="fineAmt" data-t="fine.amount">Amount (FCFA, 0 if paid in bottles)</label>
+          <input id="fineAmt" type="number" min="0" step="500" value="500">
+          <button class="btn btn-signal" id="fineAdd"><span data-t="fine.issue">Issue</span></button>
+        </div>
+        <table><thead><tr><th data-t="th.member">Member</th><th data-t="fine.offence">Offence</th><th data-t="g.amount">Amount</th><th data-t="g.status">Status</th></tr></thead>
+          <tbody id="fineBody"></tbody></table>
       </div>
 
       <div class="tabpanel" id="tab-birthdays">
@@ -1288,6 +1341,70 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
   </section>
 </div>
 
+
+<!-- CHECK IN -->
+<div class="view" id="view-checkin">
+  <section class="page-head">
+    <div class="wrap">
+      <span class="tag tag-cobalt" data-t="ci.tag">Saturday</span>
+      <h1 data-t="h.checkin">Check<br>in</h1>
+      <p style="max-width:54ch; font-size:17px;" data-t="ci.intro">Scan the code at the ground, find your name, tap it. That is the register done.</p>
+      <p class="meta" id="ciMatch" style="margin-top:8px;"></p>
+    </div>
+  </section>
+  <section style="padding-top:12px;">
+    <div class="wrap">
+      <div class="grid-3" style="margin-bottom:32px;">
+        <div class="block"><div class="stat-num" id="ciIn">0</div><div class="stat-label" data-t="ci.here">Checked in</div></div>
+        <div class="block"><div class="stat-num" id="ciLeft" style="color:var(--smoke);">0</div><div class="stat-label" data-t="ci.notyet">Not yet</div></div>
+        <div class="block block-cobalt"><div class="stat-num" style="color:#fff;" id="ciPct">0%</div><div class="stat-label" style="color:rgba(255,255,255,0.75);" data-t="att.rate">Turnout</div></div>
+      </div>
+      <label for="ciSearch" data-t="att.find">Find your name</label>
+      <input id="ciSearch" type="search" data-ph="g.search" style="max-width:380px;">
+      <div id="ciList" style="margin-bottom:32px;"></div>
+      <div class="block locked" data-lock="ciqr">
+        <h3 style="font-size:20px;" data-t="ci.qr.h">Print the check-in code</h3>
+        <p style="font-size:14px;" data-t="ci.qr.p">Print this once and pin it at the ground. It does not change.</p>
+        <div class="card-stage" style="max-width:320px;"><canvas id="ciCanvas" width="600" height="760"></canvas></div>
+        <button class="btn btn-signal" id="ciDownload" style="margin-top:16px;"><span data-t="ci.qr.btn">Download the poster</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FINANCE -->
+<div class="view" id="view-finance">
+  <section class="page-head">
+    <div class="wrap">
+      <span class="tag tag-cobalt" data-t="fin.tag">Open books</span>
+      <h1 data-t="h.finance">Club<br>finances</h1>
+      <p style="max-width:54ch; font-size:17px;" data-t="fin.intro">Every franc in, and where it came from. Visible to every member, as the constitution intends.</p>
+    </div>
+  </section>
+  <section style="padding-top:12px;">
+    <div class="wrap">
+      <div class="grid-4" style="margin-bottom:40px;" id="finTotals"></div>
+      <div class="grid-2" style="gap:32px; margin-bottom:44px;">
+        <div>
+          <h2 style="font-size:clamp(20px,2.6vw,28px); margin-bottom:18px;" data-t="fin.where">Where it comes from</h2>
+          <div id="finBreak"></div>
+        </div>
+        <div>
+          <h2 style="font-size:clamp(20px,2.6vw,28px); margin-bottom:18px;" data-t="fin.goal">Season goal</h2>
+          <div id="finFund"></div>
+        </div>
+      </div>
+      <div class="block block-signal" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+        <div style="max-width:52ch;">
+          <h3 style="font-size:22px;" data-t="fin.give.h">Give what you can</h3>
+          <p style="margin:0;" data-t="fin.give.p">Any amount, any time. Free-will donations go to the treasurer and are recorded here.</p>
+        </div>
+        <button class="btn btn-dark" data-go="donate"><span data-t="fin.give.btn">Make a donation</span></button>
+      </div>
+    </div>
+  </section>
+</div>
+
 <!-- SPONSOR PACK -->
 <div class="view" id="view-pack">
   <section class="page-head no-print">
@@ -1380,19 +1497,6 @@ footer p { font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; 
     </div>
   </section>
 
-  <section style="background:var(--paper-2); padding:76px 0;">
-    <div class="wrap" style="max-width:900px; text-align:center;">
-      <svg viewBox="0 0 200 200" style="width:44px; height:44px; color:var(--cobalt); opacity:0.25; margin:0 auto 18px;"><use href="#art-ball"/></svg>
-      <blockquote style="margin:0;">
-        <p style="font-family:var(--font-display); text-transform:none; font-size:clamp(24px,3.6vw,42px); line-height:1.2; color:var(--ink); margin:0 0 22px;">
-          &ldquo;I di enjoy every Saturday lek na my birthday because of IVC&rdquo;
-        </p>
-        <footer style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--smoke);">
-          Veteran Chia Ngam
-        </footer>
-      </blockquote>
-    </div>
-  </section>
   <div class="stripes"></div>
   <section style="background:var(--cobalt); padding:60px 0; position:relative; overflow:hidden;">
     <svg viewBox="0 0 200 200" style="position:absolute; right:-40px; top:-40px; width:min(30vw,260px); color:rgba(255,255,255,0.14);"><use href="#art-ball"/></svg>
@@ -4372,6 +4476,55 @@ var T = {
   "gal.uploading":["Uploading\u2026","Envoi en cours\u2026","E di upload\u2026"],
   "gal.uploaded":["Uploaded, {b} KB.","Envoy\u00e9e, {b} Ko.","E don upload, {b} KB."],
   "gal.uploadfail":["Upload failed:","\u00c9chec de l'envoi :","Upload no wok:"],
+  "nav.checkin":["Check in","Pointage","Check in"],
+  "h.checkin":["Check<br>in","Poin<br>tage","Check<br>in"],
+  "ci.tag":["Saturday","Samedi","Satide"],
+  "ci.intro":["Scan the code at the ground, find your name, tap it. That is the register done.","Scannez le code au terrain, trouvez votre nom, appuyez. Le registre est fait.","Scan di code fo ground, find ya nem, tosh am. Na so di register don finish."],
+  "ci.here":["Checked in","Point\u00e9s","Don check in"],
+  "ci.notyet":["Not yet","Pas encore","Never yet"],
+  "ci.tap":["I'm here","Je suis l\u00e0","A dey ya"],
+  "ci.done":["Checked in","Point\u00e9","Yu don check in"],
+  "ci.qr.h":["Print the check-in code","Imprimer le code de pointage","Print di check-in code"],
+  "ci.qr.p":["Print this once and pin it at the ground. It does not change.","\u00c0 imprimer une fois et afficher au terrain. Il ne change pas.","Print dis wan taim, pin am fo ground. E no di chenj."],
+  "ci.qr.btn":["Download the poster","T\u00e9l\u00e9charger l'affiche","Download di poster"],
+  "nav.finance":["Finances","Finances","Moni tin"],
+  "h.finance":["Club<br>finances","Finances<br>du club","Club<br>moni"],
+  "fin.tag":["Open books","Comptes ouverts","Open buk"],
+  "fin.intro":["Every franc in, and where it came from. Visible to every member, as the constitution intends.","Chaque franc re\u00e7u, et son origine. Visible par tous les membres, comme le pr\u00e9voient les statuts.","Evri franc wey enta, and wia e komot. Evri memba fit si am, as di constitution tok."],
+  "fin.total":["Collected this season","Encaiss\u00e9 cette saison","Wetin we don kolekt"],
+  "fin.dues":["Annual dues","Cotisations annuelles","Cotisation fo year"],
+  "fin.socials":["Weekly socials","Cotisations hebdomadaires","Wikli social"],
+  "fin.fines":["Fines","Amendes","Fine dem"],
+  "fin.donations":["Donations","Dons","Donation dem"],
+  "fin.owing":["Still owed","Encore d\u00fb","Wetin dem never pay"],
+  "fin.where":["Where it comes from","Provenance","Wia e di komot"],
+  "fin.goal":["Season goal","Objectif de la saison","Goal fo di season"],
+  "fin.give.h":["Give what you can","Donnez ce que vous pouvez","Giv wetin yu fit"],
+  "fin.give.p":["Any amount, any time. Free-will donations go to the treasurer and are recorded here.","N'importe quel montant, \u00e0 tout moment. Les dons volontaires vont au tr\u00e9sorier et sont enregistr\u00e9s ici.","Eni amount, eni taim. Free-will donation di go fo treasurer and we di rekod am ya."],
+  "fin.give.btn":["Make a donation","Faire un don","Mek donation"],
+  "members.tab.socials":["Socials","Hebdo","Social"],
+  "members.tab.fines":["Fines","Amendes","Fine"],
+  "soc.p":["Weekly social contribution is 1,000 FCFA per session, owed whether a member attends or not (Ch.3 Art.2). Tap to mark paid for the session shown.","La cotisation hebdomadaire est de 1 000 FCFA par s\u00e9ance, due que le membre soit pr\u00e9sent ou non (Ch.3 Art.2).","Wikli social na 1,000 FCFA evri sesion, wheda memba kam or e no kam (Ch.3 Art.2)."],
+  "soc.paid":["Paid this session","Pay\u00e9 cette s\u00e9ance","Don pay dis sesion"],
+  "soc.owing":["Outstanding","Restant d\u00fb","Never pay"],
+  "soc.total":["Collected, FCFA","Encaiss\u00e9, FCFA","Wetin we kolekt, FCFA"],
+  "soc.remind":["Remind those outstanding","Relancer les retardataires","Rimain dem wey never pay"],
+  "soc.allpaid":["Everyone has paid for this session.","Tout le monde a pay\u00e9 pour cette s\u00e9ance.","Evribodi don pay fo dis sesion."],
+  "soc.title":["Weekly social","Cotisation hebdomadaire","Wikli social"],
+  "soc.each":["each, present or absent","chacun, pr\u00e9sent ou absent","for each pesin, wheda yu kam or no"],
+  "fine.p":["For the Chief Whip. Fines follow Chapter 3 Article 4 of the constitution.","Pour le Chef de Discipline. Les amendes suivent le Chapitre 3 Article 4 des statuts.","Fo di Chief Whip. Fine dem di folo Chapter 3 Article 4 fo di constitution."],
+  "fine.count":["Fines issued","Amendes \u00e9mises","Fine wey dem giv"],
+  "fine.owed":["Unpaid, FCFA","Impay\u00e9, FCFA","Never pay, FCFA"],
+  "fine.paid":["Collected, FCFA","Encaiss\u00e9, FCFA","Wetin we kolekt, FCFA"],
+  "fine.new":["Issue a fine","\u00c9mettre une amende","Giv fine"],
+  "fine.offence":["Offence","Infraction","Wetin yu do"],
+  "fine.amount":["Amount (FCFA, 0 if paid in bottles)","Montant (FCFA, 0 si pay\u00e9 en bouteilles)","How much (FCFA, 0 if na bottul)"],
+  "fine.issue":["Issue","\u00c9mettre","Giv am"],
+  "fine.none":["No fines issued.","Aucune amende.","No fine dey."],
+  "g.amount":["Amount","Montant","How much"],
+  "wx.sat":["Saturday at Nomayos","Samedi \u00e0 Nomayos","Satide fo Nomayos"],
+  "wx.rain":["{p}% chance of rain","{p}% de risque de pluie","{p}% chance sey rain go fall"],
+  "wx.warn":["Rain likely \u2014 check with the coach before travelling.","Pluie probable \u2014 v\u00e9rifiez avec l'entra\u00eeneur avant de vous d\u00e9placer.","Rain fit fall \u2014 ask di coach bifo yu komot."],
   "nav.home":["Home","Accueil","Home"],
   "nav.fixtures":["Fixtures","Calendrier","Match dem"],
   "nav.squad":["Squad","Effectif","Team"],
@@ -5109,6 +5262,244 @@ document.addEventListener('click', function (e) {
   }
 });
 
+
+
+/* ================= Saturday check-in ================= */
+function renderCheckin() {
+  var list = document.getElementById('ciList');
+  if (!list) return;
+  var m = document.getElementById('ciMatch');
+  if (m) m.textContent = NEXT_MATCH;
+  var q = (document.getElementById('ciSearch').value || '').trim().toLowerCase();
+  var shown = MEMBERS.filter(function (x) { return x.name.toLowerCase().indexOf(q) !== -1; });
+  list.innerHTML = shown.map(function (x) {
+    var here = attendance[x.name] === 'in';
+    return '<div class="att-row"><div><div class="att-name">' + esc(x.name) + '</div>' +
+      '<div class="meta">' + esc(roleName(x.role)) + '</div></div>' +
+      '<div class="att-btns"><button class="att-btn cycle' + (here ? ' on-in' : '') +
+      '" data-ci="' + esc(x.name) + '">' + (here ? t('ci.done') : t('ci.tap')) + '</button></div></div>';
+  }).join('');
+  var inCount = MEMBERS.filter(function (x) { return attendance[x.name] === 'in'; }).length;
+  document.getElementById('ciIn').textContent = inCount;
+  document.getElementById('ciLeft').textContent = MEMBERS.length - inCount;
+  document.getElementById('ciPct').textContent = MEMBERS.length ? Math.round(inCount / MEMBERS.length * 100) + '%' : '0%';
+}
+document.addEventListener('input', function (e) {
+  if (e.target && e.target.id === 'ciSearch') renderCheckin();
+});
+document.addEventListener('click', function (e) {
+  var ci = e.target.closest && e.target.closest('[data-ci]');
+  if (!ci) return;
+  var who = ci.dataset.ci;
+  attendance[who] = attendance[who] === 'in' ? '' : 'in';
+  dbSetAttendance(who, attendance[who]);
+  renderCheckin();
+  safe('attendance', renderAttendance);
+});
+
+/* poster with the check-in code, printed once and pinned at the ground */
+function drawCheckinPoster() {
+  var c = document.getElementById('ciCanvas');
+  if (!c || !c.getContext) return null;
+  var ctx = c.getContext('2d'); if (!ctx) return null;
+  var W = c.width, H = c.height;
+  ctx.fillStyle = '#0A0B0E'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#E4572E'; ctx.fillRect(0, 0, W, 10);
+  if (CARD_LOGO.complete && CARD_LOGO.naturalWidth) {
+    var lh = 92, lw = lh * (CARD_LOGO.naturalWidth / CARD_LOGO.naturalHeight);
+    ctx.drawImage(CARD_LOGO, (W - lw) / 2, 46, lw, lh);
+  }
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#FFFFFF'; ctx.font = '34px Archivo Black, Arial Black, sans-serif';
+  ctx.fillText('CHECK IN', W / 2, 196);
+  ctx.fillStyle = '#C9A24A'; ctx.font = '15px Space Mono, monospace';
+  ctx.fillText('INTEGRAL VETERAN CLUB', W / 2, 226);
+  var box = 340, x = (W - box) / 2, y = 262;
+  ctx.fillStyle = '#F4F1EA'; ctx.fillRect(x - 14, y - 14, box + 28, box + 28);
+  drawQR(ctx, SITE_URL + '#checkin', x, y, box);
+  ctx.fillStyle = '#FFFFFF'; ctx.font = '20px Space Mono, monospace';
+  ctx.fillText('SCAN · FIND YOUR NAME · TAP', W / 2, y + box + 68);
+  ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '14px Space Mono, monospace';
+  ctx.fillText('NOMAYOS · EVERY SATURDAY', W / 2, y + box + 98);
+  ctx.textAlign = 'left';
+  return c;
+}
+document.addEventListener('click', function (e) {
+  if (!e.target.closest || !e.target.closest('#ciDownload')) return;
+  var cv = drawCheckinPoster();
+  if (!cv) return;
+  var a = document.createElement('a');
+  a.download = 'IVC-check-in-poster.png';
+  a.href = cv.toDataURL('image/png');
+  a.click();
+});
+
+/* ================= weather for the next fixture ================= */
+var YAOUNDE = { lat: 3.848, lon: 11.502 };
+var WX_CODES = { 0:'Clear', 1:'Mostly clear', 2:'Partly cloudy', 3:'Cloudy', 45:'Fog', 48:'Fog',
+  51:'Light drizzle', 53:'Drizzle', 55:'Heavy drizzle', 61:'Light rain', 63:'Rain', 65:'Heavy rain',
+  80:'Showers', 81:'Showers', 82:'Heavy showers', 95:'Thunderstorm', 96:'Thunderstorm', 99:'Thunderstorm' };
+function loadWeather() {
+  var el = document.getElementById('wxBox');
+  if (!el || typeof fetch !== 'function') return;
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + YAOUNDE.lat + '&longitude=' + YAOUNDE.lon +
+            '&daily=weather_code,temperature_2m_max,precipitation_probability_max&timezone=Africa%2FDouala&forecast_days=7';
+  fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+    if (!j.daily || !j.daily.time) return;
+    // the next Saturday, since that is when the club plays
+    var idx = 0;
+    for (var i = 0; i < j.daily.time.length; i++) {
+      if (new Date(j.daily.time[i] + 'T12:00:00').getDay() === 6) { idx = i; break; }
+    }
+    var code = j.daily.weather_code[idx];
+    var rain = j.daily.precipitation_probability_max[idx];
+    el.innerHTML = '<div class="block" style="display:flex; gap:20px; align-items:center; flex-wrap:wrap;">' +
+      '<div><div class="stat-num" style="font-size:clamp(28px,3.4vw,42px);">' +
+        Math.round(j.daily.temperature_2m_max[idx]) + '°</div>' +
+        '<div class="stat-label">' + t('wx.sat') + '</div></div>' +
+      '<div style="flex:1; min-width:200px;"><strong style="font-size:16px;">' +
+        (WX_CODES[code] || '—') + '</strong>' +
+        '<p style="margin:4px 0 0; font-size:14px;">' + t('wx.rain').replace('{p}', rain) + '</p>' +
+        (rain >= 60 ? '<p style="margin:6px 0 0; font-size:13px; color:var(--signal);">' + t('wx.warn') + '</p>' : '') +
+      '</div></div>';
+  }).catch(function () { el.innerHTML = ''; });
+}
+
+/* ================= money: socials, fines, donations, fund ================= */
+var SOCIAL_AMOUNT = 1000;
+var socials = {};        // 'YYYY-MM-DD|name' -> true
+var FINES_LOG = [];      // { name, offence, amount, paid }
+var DONATIONS = [];      // { name, amount, purpose }
+var FUND = { title: 'Season goal', goal: 500000 };
+
+function socSession() {
+  var el = document.getElementById('socSession');
+  return (el && el.value) || new Date().toISOString().slice(0, 10);
+}
+function renderSocials() {
+  var list = document.getElementById('socList');
+  if (!list) return;                                  // locked
+  var day = socSession();
+  list.innerHTML = MEMBERS.map(function (m) {
+    var on = !!socials[day + '|' + m.name];
+    return '<div class="att-row"><div><div class="att-name">' + esc(m.name) + '</div>' +
+      '<div class="meta">' + esc(roleName(m.role)) + '</div></div>' +
+      '<div class="att-btns"><button class="att-btn cycle' + (on ? ' on-in' : '') +
+      '" data-soc="' + esc(m.name) + '">' + (on ? t('g.paid') : t('g.owing')) + '</button></div></div>';
+  }).join('');
+  var paid = MEMBERS.filter(function (m) { return socials[day + '|' + m.name]; }).length;
+  document.getElementById('socPaid').textContent = paid;
+  document.getElementById('socOwing').textContent = MEMBERS.length - paid;
+  var all = Object.keys(socials).filter(function (k) { return socials[k]; }).length;
+  document.getElementById('socTotal').textContent = fmt(all * SOCIAL_AMOUNT);
+}
+
+function renderFines() {
+  var body = document.getElementById('fineBody');
+  if (!body) return;                                  // locked
+  var who = document.getElementById('fineWho');
+  if (who && !who.options.length) {
+    who.innerHTML = MEMBERS.map(function (m, i) { return '<option value="' + i + '">' + esc(m.name) + '</option>'; }).join('');
+  }
+  var what = document.getElementById('fineWhat');
+  if (what && !what.options.length) {
+    what.innerHTML = FINES.map(function (f, i) { return '<option value="' + i + '">' + esc(L(f[0])) + '</option>'; }).join('');
+  }
+  body.innerHTML = FINES_LOG.length ? FINES_LOG.map(function (f, i) {
+    return '<tr><td>' + esc(f.name) + '</td><td>' + esc(f.offence) + '</td>' +
+      '<td>' + (f.amount ? fmt(f.amount) : '—') + '</td>' +
+      '<td><button class="pill ' + (f.paid ? 'pill-paid' : 'pill-due') + '" data-finepaid="' + i +
+      '" style="border:none; cursor:pointer; font-family:var(--font-mono);">' +
+      (f.paid ? t('g.paid') : t('g.owing')) + '</button></td></tr>';
+  }).join('') : '<tr><td colspan="4" style="padding:24px 12px; color:var(--smoke);">' + t('fine.none') + '</td></tr>';
+  document.getElementById('fineCount').textContent = FINES_LOG.length;
+  document.getElementById('fineOwed').textContent =
+    fmt(FINES_LOG.filter(function (f) { return !f.paid; }).reduce(function (a, f) { return a + (f.amount || 0); }, 0));
+  document.getElementById('finePaid').textContent =
+    fmt(FINES_LOG.filter(function (f) { return f.paid; }).reduce(function (a, f) { return a + (f.amount || 0); }, 0));
+}
+
+function financeFigures() {
+  var duesPaid = MEMBERS.filter(function (m) { return m.paid; }).length * DUES_AMOUNT;
+  var socialTotal = Object.keys(socials).filter(function (k) { return socials[k]; }).length * SOCIAL_AMOUNT;
+  var fineTotal = FINES_LOG.filter(function (f) { return f.paid; }).reduce(function (a, f) { return a + (f.amount || 0); }, 0);
+  var donTotal = DONATIONS.reduce(function (a, d) { return a + (d.amount || 0); }, 0);
+  return { dues:duesPaid, socials:socialTotal, fines:fineTotal, donations:donTotal,
+           total:duesPaid + socialTotal + fineTotal + donTotal,
+           owing:(MEMBERS.length - MEMBERS.filter(function (m) { return m.paid; }).length) * DUES_AMOUNT };
+}
+function renderFinance() {
+  var wrap = document.getElementById('finTotals');
+  if (!wrap) return;
+  var f = financeFigures();
+  wrap.innerHTML =
+    '<div class="block block-cobalt"><div class="stat-num" style="color:#fff;">' + fmt(f.total) + '</div>' +
+      '<div class="stat-label" style="color:rgba(255,255,255,0.75);">' + t('fin.total') + '</div></div>' +
+    '<div class="block"><div class="stat-num">' + fmt(f.dues) + '</div><div class="stat-label">' + t('fin.dues') + '</div></div>' +
+    '<div class="block"><div class="stat-num">' + fmt(f.socials) + '</div><div class="stat-label">' + t('fin.socials') + '</div></div>' +
+    '<div class="block"><div class="stat-num" style="color:var(--signal);">' + fmt(f.owing) + '</div><div class="stat-label">' + t('fin.owing') + '</div></div>';
+
+  var rows = [[t('fin.dues'), f.dues], [t('fin.socials'), f.socials],
+              [t('fin.fines'), f.fines], [t('fin.donations'), f.donations]];
+  var max = Math.max(1, f.total);
+  document.getElementById('finBreak').innerHTML = rows.map(function (r) {
+    var pct = Math.round(r[1] / max * 100);
+    return '<div style="margin-bottom:16px;">' +
+      '<div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;">' +
+      '<span>' + r[0] + '</span><strong>' + fmt(r[1]) + ' FCFA</strong></div>' +
+      '<div style="height:8px; background:var(--paper-2); border-radius:4px; overflow:hidden;">' +
+      '<div style="height:100%; width:' + pct + '%; background:var(--cobalt);"></div></div></div>';
+  }).join('');
+
+  var pct = Math.min(100, Math.round(f.total / Math.max(1, FUND.goal) * 100));
+  document.getElementById('finFund').innerHTML =
+    '<div class="block"><h3 style="font-size:18px;">' + esc(FUND.title) + '</h3>' +
+    '<div class="stat-num" style="font-size:clamp(28px,3.6vw,46px);">' + pct + '%</div>' +
+    '<div style="height:12px; background:var(--paper-2); border-radius:6px; overflow:hidden; margin:14px 0 10px;">' +
+    '<div style="height:100%; width:' + pct + '%; background:var(--signal);"></div></div>' +
+    '<p style="margin:0; font-size:14px;">' + fmt(f.total) + ' / ' + fmt(FUND.goal) + ' FCFA</p></div>';
+}
+
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.id === 'socSession') renderSocials();
+});
+document.addEventListener('click', function (e) {
+  var sc = e.target.closest && e.target.closest('[data-soc]');
+  if (sc) {
+    var key = socSession() + '|' + sc.dataset.soc;
+    socials[key] = !socials[key];
+    if (DB.on) DB.upsert('socials', [{ session: socSession(), member_name: sc.dataset.soc, paid: !!socials[key] }],
+                         'session,member_name').catch(function () {});
+    renderSocials(); renderFinance();
+    return;
+  }
+  if (e.target.closest && e.target.closest('#fineAdd')) {
+    var m = MEMBERS[Number(document.getElementById('fineWho').value) || 0];
+    var off = FINES[Number(document.getElementById('fineWhat').value) || 0];
+    var amt = Number(document.getElementById('fineAmt').value) || 0;
+    var rec = { name:m.name, offence:L(off[0]), amount:amt, paid:false };
+    FINES_LOG.unshift(rec);
+    if (DB.on) DB.insert('fines', [{ member_name:rec.name, offence:rec.offence, amount:rec.amount, paid:false }]).catch(function () {});
+    renderFines(); renderFinance();
+    return;
+  }
+  var fp = e.target.closest && e.target.closest('[data-finepaid]');
+  if (fp) {
+    var rec2 = FINES_LOG[Number(fp.dataset.finepaid)];
+    rec2.paid = !rec2.paid;
+    if (DB.on && rec2.id) DB.update('fines', '?id=eq.' + rec2.id, { paid: rec2.paid }).catch(function () {});
+    renderFines(); renderFinance();
+    return;
+  }
+  if (e.target.closest && e.target.closest('#socRemind')) {
+    var day = socSession();
+    var owing = MEMBERS.filter(function (m) { return !socials[day + '|' + m.name]; });
+    if (!owing.length) { alert(t('soc.allpaid')); return; }
+    openWa('*' + t('soc.title').toUpperCase() + ' — ' + day + '*\n\n' + fmt(SOCIAL_AMOUNT) +
+      ' FCFA ' + t('soc.each') + '\n\n' + owing.map(function (m) { return '• ' + m.name; }).join('\n'), 'money');
+  }
+});
+
 /* ---- donations ---- */
 var DONATION_PURPOSES = [
   ['Where it is needed most','Là où c\'est le plus utile','Wia e nid am pass'],
@@ -5118,7 +5509,7 @@ var DONATION_PURPOSES = [
   ['Bereavement support','Soutien en cas de deuil','Support fo wen pesin die'],
   ['Away-day travel','Déplacements','Transport fo away match']
 ];
-var DONATION_AMOUNTS = [2000, 5000, 10000, 25000, 50000];
+var DONATION_AMOUNTS = [1000, 2000, 5000, 10000, 25000, 50000];
 function renderDonate() {
   var sel = document.getElementById('donPurpose');
   if (!sel) return;
@@ -5687,6 +6078,22 @@ function dbLoadAll() {
         }
       }).catch(function () {}),
 
+    DB.select('socials', '?select=session,member_name,paid').then(function (rows) {
+      (rows || []).forEach(function (r) { if (r.paid) socials[r.session + '|' + r.member_name] = true; });
+    }).catch(function () {}),
+
+    DB.select('fines', '?select=*&order=created_at.desc').then(function (rows) {
+      if (rows && rows.length) FINES_LOG = rows.map(function (r) {
+        return { id:r.id, name:r.member_name, offence:r.offence, amount:r.amount, paid:!!r.paid };
+      });
+    }).catch(function () {}),
+
+    DB.select('donations', '?select=donor,amount,purpose').then(function (rows) {
+      if (rows && rows.length) DONATIONS = rows.map(function (r) {
+        return { name:r.donor, amount:r.amount, purpose:r.purpose };
+      });
+    }).catch(function () {}),
+
     DB.select('news', '?select=*&order=created_at.desc').then(function (rows) {
       if (rows && rows.length) {
         NEWS = rows.map(function (r) {
@@ -5713,7 +6120,12 @@ function dbLoadAll() {
       }).catch(function () {})
   ]).then(function () {
     refreshAll();
-    if ((location.hash || '').indexOf('#member/') === 0) safe('route', function () { routeFromHash(true); });
+    if ((location.hash || '').indexOf('#member/') === 0) safe('socials', renderSocials);
+safe('fines', renderFines);
+safe('finance', renderFinance);
+safe('checkin', renderCheckin);
+safe('weather', loadWeather);
+safe('route', function () { routeFromHash(true); });
   });
 }
 
@@ -5989,6 +6401,11 @@ safe('constitution', renderConstitution);
 
 
 /* ---- committee editors: news and fixtures ---- */
+(function initSocialDate() {
+  var el = document.getElementById('socSession');
+  if (el) el.valueAsDate = new Date();
+})();
+
 (function initEditors() {
   var img = document.getElementById('edNewsImg');
   if (img) {
@@ -6409,6 +6826,11 @@ function renderMomo() {
     document.head.appendChild(apple);
   } catch (e) { /* manifest unsupported, nothing breaks */ }
 
+  // register the offline worker (split version only; harmless if absent)
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+
   var deferred = null;
   var btn = document.getElementById('installBtn');
   window.addEventListener('beforeinstallprompt', function (e) {
@@ -6503,6 +6925,7 @@ function refreshAll() {
    ['vote', renderVote], ['training', renderTraining], ['timeline', renderTimeline],
    ['momo', renderMomo], ['news', renderNews], ['constitution', renderConstitution],
    ['fitness', renderFitness], ['poster', refreshPoster], ['pack', renderPack], ['donate', renderDonate],
+   ['socials', renderSocials], ['fines', renderFines], ['finance', renderFinance], ['checkin', renderCheckin],
    ['shop', renderShop], ['gallery', renderGallery], ['sponsors', renderSponsors],
    ['fixtures', renderFixtures],
    ['lock', applyLock]
@@ -6518,7 +6941,7 @@ document.querySelectorAll('.tab[data-tab]').forEach(function (tab) {
     if (!panel) return;
     var group = tab.parentNode;
     group.querySelectorAll('.tab[data-tab]').forEach(function (x) { x.classList.remove('active'); });
-    ['directory','dues','birthdays'].forEach(function (id) {
+    ['directory','dues','socials','fines','birthdays'].forEach(function (id) {
       var p = document.getElementById('tab-' + id);
       if (p) p.classList.remove('active');
     });
@@ -6682,6 +7105,11 @@ safe('lock', applyLock);
 document.getElementById('voteMonthTag').textContent = 'Player of the month · ' + monthLabel();
 safe('language', applyLang);
 safe('database', function () { dbLoadAll(); });
+safe('socials', renderSocials);
+safe('fines', renderFines);
+safe('finance', renderFinance);
+safe('checkin', renderCheckin);
+safe('weather', loadWeather);
 safe('route', function () { routeFromHash(true); });
 
 /* ---- news broadcast ---- */
